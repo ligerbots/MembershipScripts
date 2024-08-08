@@ -75,8 +75,8 @@ def loadFile(filename, keyList):
 
 
 parser = argparse.ArgumentParser(description='Join two CSV files')
-parser.add_argument('--columns', '-C', required=True, action='append', help='Columns to use as keys (comma separated)')
-parser.add_argument('--second-columns', '-D', action='append', help='Key columns for file 2 (if different)')
+parser.add_argument('--columns', '-c', required=True, action='append', help='Columns to use as keys (comma separated)')
+parser.add_argument('--second-columns', '-C', action='append', help='Key columns for file 2 (if different)')
 parser.add_argument('--ignore-case', '-i', action='store_true', help='Ignore case of keys')
 parser.add_argument('--whitespace', '-w', action='store_true', help='Clean up whitespace before comparing keys')
 parser.add_argument('--file-one-only', '-1', action='store_true', help='Lines from file 1 only')

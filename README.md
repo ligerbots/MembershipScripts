@@ -1,4 +1,4 @@
-LigerBots Membership Scripts
+# LigerBots Membership Scripts
 
 These are a few scripts used to manage the LigerBots team membership.
 
@@ -32,3 +32,47 @@ So the general procedure is as follows:
 Right now, removing people from the team is mostly manual. The one "automation" is that,
 once a person is removed from the master roster (and the website!), running a sync with group_tool.py
 will remove them from the Google email lists.
+
+## Scripts
+
+### merge_lists.py
+* This combines two different team rosters.
+* Uses email address as the key to match rows
+* We want to preserve mods and extra columns from the master roster file (first file), so 
+  the output is always defined by reading the file
+* For historic reasons, not all members are signed up on the team's website, so we don't
+  delete any rows. Slightly annoying.
+* The script is a bit old, so uses some older syntax. Also, the "-G" mode has not been used
+  in a long time.
+
+### group_tool.py
+* This takes a CSV list and syncs the emails and groups to our Google email groups
+* The credential files are not included in the repo! They are cached in the same directory,
+  so be careful about checking in.
+* Uses "google_groups.py" to wrap some behavior. That file uses the modules provided by Google.
+* You can preview what it will do if you do *not* give it the "--commit" command line option.
+
+### present.py
+* This is a generic CSV tool to find differences between 2 CSV files, based on set of key columns.
+  <pre>present.py -c Column1 file1.csv file2.csv > output.csv</pre>
+* This will look at "Column1" for both files and output the rows of *file2.csv* 
+which are also found in file1.csv.
+  <pre>present.py -m -c Column1,Column2 file1.csv file2.csv > output.csv</pre>
+* This will look at "Column1" and "Column2" for both files and output the rows of *file2.csv* 
+which are **not** found in file1.csv.
+* So, the output file is always a set of rows from the 2nd file.
+* Example: if you have fetch a CSV which lists all users (email) in some service, you can 
+  find out if anyone is missing with:
+   <pre>present.py -m -c email service_accounts.csv roster.csv > missed.csv</pre>
+* You can use "-C" is the 2nd file column names are different.
+* Use "-i" to ignore case when comparing key column values.
+* Warning that column names are treated as case sensitive.
+
+### joinCSV.py
+* General tool to join rows of 2 CSV files.
+* This is kind of a row-level "VLOOKUP" for CSVs (very loose comparison).
+* The two CSV files are read and rows are merged if the specifed key columns match.
+* The output is always the columns from file1 followed by the columns from file2.
+* If a row has no match, the row is still output with blanks for the part that is missing.
+* I use this to merge 2 roster or similar files and then pull it into a spreadsheet 
+  for sorting, filtering etc. 
